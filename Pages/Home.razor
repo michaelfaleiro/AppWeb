@@ -1,0 +1,69 @@
+﻿@page "/"
+@using AppWeb.Components
+@using AppWeb.Models
+@using AppWeb.Pages.Orcamentos
+@inject IOrcamentoService OrcamentoService
+
+
+<PageTitle>Orcamento</PageTitle>
+
+<h1>Orcamentos</h1>
+
+
+<button class="btn btn-outline-info" @onclick="NovoOrcamento">Novo</button>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Cliente</th>
+            <th>Veiculo</th>
+            <th>Placa</th>
+            <th>Chassi</th>
+            <th>DataCriação</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in _orcamentos)
+        {
+            <tr>
+                <td>@item.Cliente</td>
+                <td>@item.Veiculo</td>
+                <td>@item.Placa</td>
+                <td>@item.Chassi</td>
+                <td>@item.DataCriacao</td>
+                <td></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+
+@if (showModalNovoOrcamento == true)
+{
+    <NovoOrcamento showModalNovoOrcamento="showModalNovoOrcamento" CloseModalOrcamento="CloseModalOrcamento" />
+}
+
+@code {
+    List<Models.Orcamento>? _orcamentos = new();
+
+    bool showModalNovoOrcamento = false;
+    protected override async Task OnInitializedAsync()
+    {
+        _orcamentos = await OrcamentoService.GetOrcamentosAsync();
+    }
+
+    private void NovoOrcamento()
+    {
+        showModalNovoOrcamento = true;
+    }
+
+    private void CloseModalOrcamento()
+    {
+        showModalNovoOrcamento = false;
+    }
+
+
+}
